@@ -2,11 +2,14 @@ using Dapper;
 using System.Collections.Generic;
 using MySql.Data.MySqlClient;
 using Microsoft.AspNetCore.Mvc;
-using Spiffs.MtgTracker.Models;
+using Spiff.MtgTracker.Models;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Spiff.MtgTracker;
+using Spiff.MtgTracker.Helpers;
+using System.Linq;
 
-namespace Spiffs.MtgTracker.Controllers
+namespace Spiff.MtgTracker.Controllers
 {
     [ApiController]
     [Route("Cards")]
@@ -17,9 +20,54 @@ namespace Spiffs.MtgTracker.Controllers
 	    {
 		string connectionString = Environment.GetEnvironmentVariable("DB__CONNECTIONSTRING");
 		_logger.LogInformation("We made it into the controller!!!!");
-                MySqlConnection connection = new MySqlConnection(connectionString);
+                using MySqlConnection connection = new MySqlConnection(connectionString);
 		IEnumerable<Card> results = await connection.QueryAsync<Card>("SELECT * FROM Cards;");
 		return Ok(results);
             }
+
+	[HttpPost]
+	public IActionResult AddCard(AddCardRequest request)
+	{
+		string connectionString = Environment.GetEnvironmentVariable(Constants.CONNECTION);
+		_logger.LogInformation("we made it to the Add Card method");
+		using MySqlConnection connection = new MySqlConnection(connectionString);
+		
+		connection.Open();
+
+		using var transaction = new connection.BeginTransaction();
+		try
+		{
+			var parameters = new {
+			Name = request.Name,
+			Cost = request.Cost,
+			Type = request.Type,
+			Effect = request.Effect,
+			Power = request.Power,
+			Toughness = request.Toughness,
+			Rarity = request.Rarity,
+			ConvertedManaCost = request.ConvertedManaCost,
+			NumberOwned = request.NumberOwned
+			};
+
+			int id = connection.QuerySingle<int>(Constants.SQL.ADDCARD, parameters);
+		
+			List<string> colors = ColorParser.ParseColorsFromCost(request.Cost);
+
+			colors.AddRange(ColorParser.ParseColorsFromEffect(request.Effect));
+		
+			var colorRows = colors.Select(c => new { CardId = id, Color = c});
+
+			connection.Execute(Constants.SQL.ADDCARDCOLORS, colorRows);
+			
+			transaction.Commit();
+		}
+		catch (Exception ex)
+		{	
+			_logger.LogError(ex);
+			transaction.Rollback();
+		}
+
+		return NoContent();
+	}
     }
 }
