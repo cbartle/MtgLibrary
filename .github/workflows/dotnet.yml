@@ -21,8 +21,8 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Restore dependencies
-      run: dotnet restore ./MtgTracker/MtgTracker.csproj
+      run: dotnet restore ./MtgLibrary.sln
     - name: Build
-      run: dotnet build ./MtgTracker/MtgTracker.csproj --no-restore
+      run: dotnet build ./MtgLibrary.sln --no-restore
     - name: Test
-      run: dotnet test --no-build ./MtgTracker/MtgTracker.csproj --verbosity normal
+      run: dotnet test --no-build ./MtgLibrary.Tests/MtgLibrary.Tests.csproj --verbosity normal
