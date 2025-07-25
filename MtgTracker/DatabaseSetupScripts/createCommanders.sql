@@ -1,0 +1,6 @@
+CREATE TABLE Commanders (
+	DeckId INT NOT NULL,
+	CardId INT NOT NULL,
+	FOREIGN KEY (DeckId) REFERENCES Decks(Id),
+	FOREIGN KEY (CardId) REFERENCES Cards(Id)
+);
