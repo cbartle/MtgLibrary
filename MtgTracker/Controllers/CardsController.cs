@@ -69,5 +69,12 @@ namespace Spiff.MtgTracker.Controllers
 
 		return NoContent();
 	}
+
+	[HttpPost]
+	[Route("{name}"]
+	public IActionResult AddByName([FromUri] string name)
+	{
+		
+	}
     }
 }
