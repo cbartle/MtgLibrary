@@ -34,7 +34,7 @@ namespace Spiff.MtgTracker.Controllers
 		
 		connection.Open();
 
-		using var transaction = new connection.BeginTransaction();
+		using var transaction = connection.BeginTransaction();
 		try
 		{
 			var parameters = new {
@@ -63,7 +63,7 @@ namespace Spiff.MtgTracker.Controllers
 		}
 		catch (Exception ex)
 		{	
-			_logger.LogError(ex);
+			_logger.LogError(ex.Message);
 			transaction.Rollback();
 		}
 
