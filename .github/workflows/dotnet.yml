@@ -25,4 +25,4 @@ jobs:
     - name: Build
       run: dotnet build ./MtgTracker/MtgTracker.csproj --no-restore
     - name: Test
-      run: dotnet test --no-build ./MtgTracker/MtgTracker.csproj --verbosity normal
+      run: dotnet test --no-build ./MtgLibrary.Tests/MtgLibrary.Tests.csproj --verbosity normal
