@@ -1,0 +1,5 @@
+CREATE TABLE CardColors (
+	CardId INT NOT NULL,
+	Color NVARCHAR(100) NOT NULL,
+	FOREIGN KEY (CardId) REFERENCES Cards(Id)
+);
