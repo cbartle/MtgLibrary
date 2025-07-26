@@ -7,4 +7,3 @@ body:
     id: proposal
     attributes:
       label: Describe your idea
-      required: true
