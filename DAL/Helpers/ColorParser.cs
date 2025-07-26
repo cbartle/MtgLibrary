@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Spiff.MtgTracker.Helpers
+namespace Spiff.MtgLibrary.DAL.Helpers
 {
 	public static class ColorParser
 	{

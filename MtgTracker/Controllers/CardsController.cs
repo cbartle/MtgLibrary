@@ -6,7 +6,7 @@ using Spiff.MtgTracker.Models;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Spiff.MtgTracker;
-using Spiff.MtgTracker.Helpers;
+using Spiff.MtgTracker.DAL.Helpers;
 using System.Linq;
 
 namespace Spiff.MtgTracker.Controllers

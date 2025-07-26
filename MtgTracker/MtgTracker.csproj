@@ -2,7 +2,8 @@
 
   <PropertyGroup>
 	  <TargetFramework>net8.0</TargetFramework>
-	  <ImplicitUsings>true</ImplicitUsings>
+      <ImplicitUsings>true</ImplicitUsings>
+      <RootNamespace>Spiff.MtgLibrary.Api</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,6 +12,10 @@
     <PackageReference Include="MySql.Data" Version="9.4.0" />
     <PackageReference Include="MySqlConnector" Version="2.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DAL\DAL.csproj" />
   </ItemGroup>
 
 </Project>
