@@ -2,7 +2,7 @@
 
   <PropertyGroup>
 	  <TargetFramework>net8.0</TargetFramework>
-      <ImplicitUsings>true</ImplicitUsings>
+      <ImplicitUsings>enable</ImplicitUsings>
       <RootNamespace>Spiff.MtgLibrary.Api</RootNamespace>
   </PropertyGroup>
 

@@ -4,8 +4,12 @@ namespace Spiff.MtgLibrary.DAL
 	{
 		public static class SQL
 		{
-			public const string GETDECKS = @"SELECT Id, Name, Description, Format 
-				FROM Decks;";
+			public const string GETDECKS = @"SELECT Id, 
+				Name, 
+				Description, 
+				Format 
+			FROM Decks;";
+			
 			public const string GETCARDS = @"SELECT Id, 
 				Name, 
 				Cost, 
@@ -16,7 +20,8 @@ namespace Spiff.MtgLibrary.DAL
 				Rarity, 
 				ConvertedManaCost, 
 				NumberOwned 
-					FROM Cards;";			
+			FROM Cards;";			
+			
 			public const string ADDCARD = @"INSERT INTO Cards (Name, Cost, Type, Effect, Power, Toughness, Rarity, ConvertedManaCost, NumberOwned)
 			Values( @Name,
 				@Cost,
@@ -32,13 +37,28 @@ namespace Spiff.MtgLibrary.DAL
 			public const string ADDCARDCOLORS = @"INSERT INTO CardColors (CardId, Color)
 				VALUES (@CardId, @Color)";
 
-            public const string CARDEXISTS = @"SELECT IF(COUNT(Name) = 1, 1, 0) AS Found
+            public const string CARDEXISTS_BYNAME = @"SELECT IF(COUNT(Name) = 1, 1, 0) AS Found
                 FROM Cards
                 WHERE  Name = @Name;";
 
             public const string DECKEXISTS = @"SELECT IF(COUNT(Name) = 1, 1, 0) As Found
                 FROM Decks
                 WHERE Name = @Name;";
+
+			public const string GETCARD_BYID = @"SELECT Id, 
+				Name, 
+				Cost, 
+				Type, 
+				Effect, 
+				Power, 
+				Toughness, 
+				Rarity, 
+				ConvertedManaCost, 
+				NumberOwned 
+			FROM Cards
+			WHERE Name = @Name;";
+
+
 		}
 
 		public static string CONNECTION = "DB__CONNECTIONSTRING";
