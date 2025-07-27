@@ -114,14 +114,14 @@ public class CardAccess(ILogger<CardAccess> _logger, IExternalAPIService _extern
         string connectionString = Environment.GetEnvironmentVariable(Constants.CONNECTION);
         using MySqlConnection connection = new MySqlConnection(connectionString);
 
-        _logger.LogDebug($"Trying to update the number of {cardName} owned");
+        _logger.LogInformation($"Trying to update the number of {cardName} owned");
         connection.Open();
 
 		using IDbTransaction transaction = connection.BeginTransaction();
 
         try
         {
-            connection.Execute(Constants.SQL.UPDATENUMBEROWNED_BYNAME, new { Name = cardName, NumberOnwed = numberOwned}, transaction: transaction);
+            connection.Execute(Constants.SQL.UPDATENUMBEROWNED_BYNAME, new { Name = cardName, NumberOwned = numberOwned}, transaction: transaction);
             
             _logger.LogTrace($"Getting card {cardName} from the database");
             card = connection.QuerySingleOrDefault<Card>(Constants.SQL.GETCARD_BYNAME, new {Name = cardName});

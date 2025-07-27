@@ -58,7 +58,7 @@ namespace Spiff.MtgLibrary.DAL
 			FROM Cards
 			WHERE Name = @Name;";
 
-            public const string UPDATENUMBEROWNED_BYNAME = @"UPDATE Card
+            public const string UPDATENUMBEROWNED_BYNAME = @"UPDATE Cards
                 SET NumberOwned = @numberOwned
                 WHERE Name = @Name";
 
