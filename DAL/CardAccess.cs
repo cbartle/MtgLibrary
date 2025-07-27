@@ -1,12 +1,12 @@
 ﻿using Dapper;
 using System.Collections.Generic;
 using MySql.Data.MySqlClient;
-using Microsoft.AspNetCore.Mvc;
 using Spiff.MtgLibrary.DAL.Models;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Spiff.MtgTracker.DAL.Helpers;
+using Spiff.MtgLibrary.DAL.Helpers;
 using System.Linq;
+using System.Data;
 
 namespace Spiff.MtgLibrary.DAL;
 
@@ -32,7 +32,7 @@ public class CardAccess(ILogger<CardAccess> _logger, IExternalAPIService _extern
         using MySqlConnection connection = new MySqlConnection(connectionString);
 		
         _logger.LogTrace($"Getting card {name} from the database");
-        Card card = await connection.QuerySingleOrDefault<Card>(Constants.SQL.GETCARD_BYNAME, new {Name = name});
+        Card card = connection.QuerySingleOrDefault<Card>(Constants.SQL.GETCARD_BYNAME, new {Name = name});
         return card;
     }
 
@@ -100,10 +100,41 @@ public class CardAccess(ILogger<CardAccess> _logger, IExternalAPIService _extern
 		
         _logger.LogInformation($"Checking if card exists with name {cardName}");
 
-        bool exists = connection.ExecuteScaler<bool>(Spiff.MtgLibrary.DAL.Constants.SQL.CARDEXISTS_ sBYNAME, new {Name = cardName});
+        bool exists = connection.ExecuteScalar<bool>(Constants.SQL.CARDEXISTS_BYNAME, new {Name = cardName});
 
         _logger.LogDebug($"Card does {(exists ? "" : "not")} exist");
         
         return exists;
+    }
+
+    ///<inheritdoc />
+    public bool TryUpdateNumberOwned(string cardName, int numberOwned, out Card card)
+    {
+        card = null;
+        string connectionString = Environment.GetEnvironmentVariable(Constants.CONNECTION);
+        using MySqlConnection connection = new MySqlConnection(connectionString);
+
+        _logger.LogDebug($"Trying to update the number of {cardName} owned");
+        connection.Open();
+
+		using IDbTransaction transaction = connection.BeginTransaction();
+
+        try
+        {
+            connection.Execute(Constants.SQL.UPDATENUMBEROWNED_BYNAME, new { Name = cardName, NumberOnwed = numberOwned}, transaction: transaction);
+            
+            _logger.LogTrace($"Getting card {cardName} from the database");
+            card = connection.QuerySingleOrDefault<Card>(Constants.SQL.GETCARD_BYNAME, new {Name = cardName});
+
+            transaction.Commit();
+
+            return true;
+        }
+       catch (Exception ex)
+       {
+            _logger.LogError(ex.Message);
+            transaction.Rollback();
+            return false;
+       }
     }
 }

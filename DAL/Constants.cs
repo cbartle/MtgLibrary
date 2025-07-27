@@ -45,7 +45,7 @@ namespace Spiff.MtgLibrary.DAL
                 FROM Decks
                 WHERE Name = @Name;";
 
-			public const string GETCARD_BYID = @"SELECT Id, 
+			public const string GETCARD_BYNAME = @"SELECT Id, 
 				Name, 
 				Cost, 
 				Type, 
@@ -57,6 +57,10 @@ namespace Spiff.MtgLibrary.DAL
 				NumberOwned 
 			FROM Cards
 			WHERE Name = @Name;";
+
+            public const string UPDATENUMBEROWNED_BYNAME = @"UPDATE Card
+                SET NumberOwned = @numberOwned
+                WHERE Name = @Name";
 
 
 		}

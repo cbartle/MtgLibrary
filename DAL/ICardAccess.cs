@@ -1,3 +1,5 @@
+using Spiff.MtgLibrary.DAL.Models;
+
 namespace Spiff.MtgLibrary.DAL
 {
     public interface ICardAccess
@@ -20,7 +22,7 @@ namespace Spiff.MtgLibrary.DAL
         /// Add a card by contents       
         /// </summary>
         /// <returns> Returns the card that was added </returns>
-        Task<bool> TryAddCard(Card card, out Card returnedCard);
+        bool TryAddCard(Card card, out Card returnedCard);
 
         ///<summary>
         /// Checks for the existance of a card
@@ -28,7 +30,18 @@ namespace Spiff.MtgLibrary.DAL
         /// <returns>
         /// Returns true if the card exists already
         /// </returns>
-        bool Exists(stirng name);
+        bool Exists(string name);
+
+        ///<summary>
+        ///Try to update the number of copies owned for a card
+        ///</summary>
+        ///<param=cardName>The name of the card to update </param>
+        ///<param=copies>The number of copiesto set </param> 
+        ///<param=card>The card that was updated </param>
+        ///<returns>
+        ///Returns whether or not the update was successful
+        ///</returns>
+        bool TryUpdateNumberOwned(string cardName, int copies, out Card card);
 
     }
 }

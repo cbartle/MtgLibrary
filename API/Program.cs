@@ -6,12 +6,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
-builder,Services.AddHttpClient<Spiff.MtgLibrary.DAL.IExternalAPIService, Spiff.MtgLibrary.DAL.ExternalAPIService>(client => 
+builder.Services.AddHttpClient<Spiff.MtgLibrary.DAL.IExternalAPIService, Spiff.MtgLibrary.DAL.ExternalAPIService>(client => 
 {
     client.BaseAddress = new Uri("https://api.scyfall.com/");
 });
 
-builder.Services.AddScoped<ICardAccess, CardAccess>();
+builder.Services.AddScoped<Spiff.MtgLibrary.DAL.ICardAccess, Spiff.MtgLibrary.DAL.CardAccess>();
 
 
 builder.Logging.ClearProviders();
