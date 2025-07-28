@@ -1,4 +1,4 @@
-namespace Spiff.MtgTracker.Models
+namespace Spiff.MtgLibrary.DAL.Models
 {
 	public class Card
 	{

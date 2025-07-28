@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
+using Spiff.MtgLibrary.DAL.Models;
 
-namespace Spiff.MtgTracker.Models
+namespace Spiff.MtgLibrary.API.Models
 {
 	public class AddCardRequest
 	{
@@ -9,13 +10,13 @@ namespace Spiff.MtgTracker.Models
 		public string Cost { get; set; }
 		[Required]
 		public string Type { get; set; }
-		public string Effect { get; set;}
+		public string OracleText { get; set;}
 		public string Power { get; set; }
 		public string Toughness { get; set; }
 		[Required]
 		public string Rarity { get; set; }
 		[Required]
-		public int ConvertedManaCost { get; set; }
+		public int CMC { get; set; }
 		[Required]
 		public int NumberOwned { get; set; }
 	}
