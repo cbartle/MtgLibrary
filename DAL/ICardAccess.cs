@@ -23,6 +23,13 @@ namespace Spiff.MtgLibrary.DAL
         /// </summary>
         /// <returns> Returns the card that was added </returns>
         bool TryAddCard(Card card, out Card returnedCard);
+        
+        ///<summary>
+        ///Gets the card from scryfall, converts to a Card, then adds by TryAddCard
+        ///</summary>
+        ///<param=name>The name of the card to add</param>
+        ///<returns>Returns the card that was added..</returns>
+        Task<Card> AddCard(string name);
 
         ///<summary>
         /// Checks for the existance of a card

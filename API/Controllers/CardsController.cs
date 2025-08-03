@@ -41,16 +41,40 @@ namespace Spiff.MtgLibrary.API.Controllers
 
                 return Ok(ownedCard);
             }
-            else
+            
+            if(!_cardAccess.TryAddCard(request.ToDALCard(), out Card cardReturn))
             {
-		        if(!_cardAccess.TryAddCard(request.ToDALCard(), out Card cardReturn))
-                {
-                    return BadRequest("check logs for more details");
-                }
-		       
-                return Ok(cardReturn);
-	        
+                return BadRequest("check logs for more details");
             }
+		       
+            return Ok(cardReturn);
+        }
+
+        [HttpPost]
+        [Route("name")]
+        public async Task<IActionResult> AddCardByName([FromQuery]string name)
+        {
+            if(_cardAccess.Exists(name))
+            {
+                Card ownedCard = _cardAccess.GetCard(name);
+
+                if(!_cardAccess.TryUpdateNumberOwned(name, ownedCard.NumberOwned + 1, out ownedCard))
+                {
+                    return BadRequest($"Unable to update the number of copies of {name} owned");
+                }
+
+                return Ok(ownedCard);
+            }
+
+            Card card = await _cardAccess.AddCard(name);
+
+            
+            if(card == null)
+            {
+                return BadRequest("Card cannot be added");
+            }
+
+            return Ok(card);
         }
     }
 }
