@@ -40,6 +40,12 @@ public class CardAccess(ILogger<CardAccess> _logger, IExternalAPIService _extern
     public bool TryAddCard(Card cardToAdd, out Card returnedCard)
     {
         returnedCard = null;
+        if(cardToAdd == null)
+        {
+            _logger.LogError("The card to add was null. Unable to do any further processing");
+            return false;
+        }
+        
         if (Exists(cardToAdd.Name))
         {
             _logger.LogWarning($"Card with name {cardToAdd.Name} already exists. A duplicate will not be added");
@@ -136,5 +142,29 @@ public class CardAccess(ILogger<CardAccess> _logger, IExternalAPIService _extern
             transaction.Rollback();
             return false;
        }
+    }
+
+    ///<inheritdoc />
+    public async Task<Card> AddCard(string name)
+    {
+        _logger.LogInformation("Getting card from scryfall");
+        
+        Card scryfallCard = null;
+        try
+        {
+            scryfallCard = await _externalService.GetCardByNameAsync(name);
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            throw;
+        }
+
+        if(!TryAddCard(scryfallCard, out Card card))
+        {
+            _logger.LogError("Unable to add card to database after getting it from scryfall");
+            throw new Exception("Unable to add card.");
+        }
+        return card;
     }
 }
