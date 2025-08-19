@@ -1,1 +1,1 @@
-Abandoned because ManBox does what I want already.
+Abandoned because ManaBox does what I want already.
